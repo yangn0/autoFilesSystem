@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>档案接单</title>
+    <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.js"></script>
+    <style>
+        table {
+
+border: 1px solid #ccc;
+
+width: 100%;
+
+margin: 0;
+
+padding: 0;
+
+border-collapse: collapse;
+
+border-spacing: 0;
+
+}
+
+table tr {
+
+border: 1px solid #ddd;
+
+padding: 5px;
+
+}
+
+table th,
+
+table td {
+
+padding: 10px;
+
+text-align: center;
+
+}
+
+table th {
+
+text-transform: uppercase;
+
+font-size: 14px;
+
+letter-spacing: 1px;
+
+}
+
+/* <= 568px */
+
+@media screen and (max-width: 35.5em) {
+
+table {
+
+border: 0;
+
+}
+
+table thead {
+
+display: none;
+
+}
+
+table tr {
+
+margin-bottom: 10px;
+
+display: block;
+
+border-bottom: 2px solid #ddd;
+
+}
+
+table td {
+
+display: block;
+
+text-align: right;
+
+font-size: 13px;
+
+border-bottom: 1px dotted #ccc;
+
+}
+
+table td:last-child {
+
+border-bottom: 0;
+
+}
+
+table td:before {
+
+content: attr(data-label);
+
+float: left;
+
+text-transform: uppercase;
+
+font-weight: bold;
+
+}
+
+}
+    </style>
+</head>
+
+<body>
+
+    <table border="1">
+        <tbody id="tbody">
+
+        </tbody>
+
+
+
+    </table>
+
+</body>
+
+<script>
+    $.ajax({
+        async: false,
+        type: 'get',
+        url: '/getList',
+        data: {
+        },
+        dataType: 'json',
+        success: function (data, stats) {
+            window.document.getElementById("tbody").innerHTML += "\
+                <tr class='item'> \
+                    <td>姓名</td> \
+                    <td>存档编号</td> \
+                    <td>申请出库时间</td> \
+                    <td>申请出库操作员</td> \
+                    <td>数字化状态</td> \
+                    <td>状态</td> \
+                    <td>接取任务</td> \
+                </tr > \
+					";
+
+            for (var i = 0, len = data.length; i < len; i++) {
+                if (data[i][5] == "已接单") {
+                    window.document.getElementById("tbody").innerHTML += "\
+                <tr class='item' style='background:green;'> \
+                    <td>"+ data[i][1] + "</td > \
+                    <td>"+ data[i][0] + "</td> \
+                    <td>"+ data[i][2] + "</td> \
+                    <td>"+ data[i][3] + "</td> \
+                    <td>"+ data[i][4] + "</td> \
+                    <td>"+ data[i][5] + "</td> \
+                </tr > \
+					";
+
+                } else {
+                    window.document.getElementById("tbody").innerHTML += "\
+                <tr class='item'> \
+                    <td>"+ data[i][1] + "</td > \
+                    <td>"+ data[i][0] + "</td> \
+                    <td>"+ data[i][2] + "</td> \
+                    <td>"+ data[i][3] + "</td> \
+                    <td>"+ data[i][4] + "</td> \
+                    <td>"+ data[i][5] + "</td> \
+                    <td><input type='button' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
+                </tr > \
+					";
+                }
+            }
+        }
+    }
+    )
+    $("input").click(function () {
+        $.ajax({
+            async: true,
+            type: 'POST',
+            url: '/setAlready',
+            data: {
+                "name": this.name
+            },
+
+            success: function (data) {
+                if (data == "false") {
+                    alert("这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)");
+                    location.reload();
+                } else {
+                    alert("接单：" + data);
+                    location.reload();
+                }
+            },
+            error: function () {
+                console.log('接单失败');
+            }
+        });
+
+    })
+</script>
+
+</html>

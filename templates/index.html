@@ -3,7 +3,7 @@
 
 <head>
     
-    <meta http-equiv="refresh" content="3">
+    <meta http-equiv="refresh" content="10">
     <meta charset="utf-8">
     <title>档案接单</title>
     <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.min.js"></script>
@@ -117,7 +117,15 @@ font-weight: bold;
 
     <table border="1">
         <tbody id="tbody">
-
+            <tr class='item' style='background:yellow;font-weight:bold'> 
+                <td>姓名</td> 
+                <td>存档编号</td> 
+                <td>申请出库时间</td> 
+                <td>申请出库操作员</td> 
+                <td>数字化状态</td> 
+                <td>状态</td> 
+                <td>接取任务</td> 
+            </tr > 
         </tbody>
 
 
@@ -127,25 +135,15 @@ font-weight: bold;
 </body>
 
 <script>
+    
     $.ajax({
-        async: false,
+        async: true,
         type: 'get',
         url: '/getList',
         data: {
         },
         dataType: 'json',
         success: function (data, stats) {
-            window.document.getElementById("tbody").innerHTML += "\
-                <tr class='item'> \
-                    <td>姓名</td> \
-                    <td>存档编号</td> \
-                    <td>申请出库时间</td> \
-                    <td>申请出库操作员</td> \
-                    <td>数字化状态</td> \
-                    <td>状态</td> \
-                    <td>接取任务</td> \
-                </tr > \
-					";
 
             for (var i = 0, len = data.length; i < len; i++) {
                 if (data[i][5] == "已接单") {

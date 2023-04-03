@@ -148,7 +148,7 @@ font-weight: bold;
             for (var i = 0, len = data.length; i < len; i++) {
                 if (data[i][5] == "已接单") {
                     window.document.getElementById("tbody").innerHTML += "\
-                <tr class='item' style='background:green;'> \
+                <tr class='item' style='background:rgb(149,236,105);'> \
                     <td>"+ data[i][1] + "</td > \
                     <td>"+ data[i][0] + "</td> \
                     <td>"+ data[i][2] + "</td> \
@@ -167,7 +167,7 @@ font-weight: bold;
                     <td>"+ data[i][3] + "</td> \
                     <td>"+ data[i][4] + "</td> \
                     <td>"+ data[i][5] + "</td> \
-                    <td><input type='button' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
+                    <td><input type='button' style='width:100px;height:60px' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
                 </tr> \
 					";
                 }

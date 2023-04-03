@@ -108,8 +108,8 @@ def setAlready():
         return "false"
     return name_fileid
 
-@app.route('/autoFilesSystem123',methods = ['GET'])
-def autoFilesSystem123():
+@app.route('/dack',methods = ['GET'])
+def dack():
    return render_template("index.html")
 
 if __name__ == '__main__':

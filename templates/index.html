@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    
+
     <meta http-equiv="refresh" content="10">
     <meta charset="utf-8">
     <title>档案接单</title>
@@ -11,105 +11,108 @@
     <style>
         table {
 
-border: 1px solid #ccc;
+            border: 1px solid #ccc;
 
-width: 100%;
+            width: 100%;
 
-margin: 0;
+            margin: 0;
 
-padding: 0;
+            padding: 0;
 
-border-collapse: collapse;
+            border-collapse: collapse;
 
-border-spacing: 0;
+            border-spacing: 0;
 
-}
+        }
 
-table tr {
+        table tr {
 
-border: 1px solid #ddd;
+            border: 1px solid #ddd;
 
-padding: 5px;
+            padding: 5px;
 
-}
+        }
 
-table th,
+        table th,
 
-table td {
+        table td {
 
-padding: 10px;
+            padding: 10px;
 
-text-align: center;
+            text-align: center;
 
-}
+        }
 
-table th {
+        table th {
 
-text-transform: uppercase;
+            text-transform: uppercase;
 
-font-size: 14px;
+            font-size: 14px;
 
-letter-spacing: 1px;
+            letter-spacing: 1px;
 
-}
+        }
 
-/* <= 568px */
+        /* <= 568px */
 
-@media screen and (max-width: 35.5em) {
+        @media screen and (max-width: 35.5em) {
 
-table {
+            table {
 
-border: 0;
+                border: 0;
 
-}
+            }
 
-table thead {
+            table thead {
 
-display: none;
+                display: none;
 
-}
+            }
 
-table tr {
+            table tr {
 
-margin-bottom: 10px;
+                margin-bottom: 10px;
 
-display: block;
+                display: block;
 
-border-bottom: 2px solid #ddd;
+                border-bottom: 2px solid #ddd;
 
-}
+            }
 
-table td {
+            table td {
 
-display: block;
+                display: block;
 
-text-align: right;
+                text-align: right;
 
-font-size: 13px;
+                font-size: 13px;
 
-border-bottom: 1px dotted #ccc;
+                border-bottom: 1px dotted #ccc;
 
-}
+            }
 
-table td:last-child {
+            table td:last-child {
 
-border-bottom: 0;
+                border-bottom: 0;
 
-}
+            }
 
-table td:before {
+            table td:before {
 
-content: attr(data-label);
+                content: attr(data-label);
 
-float: left;
+                float: left;
 
-text-transform: uppercase;
+                text-transform: uppercase;
 
-font-weight: bold;
+                font-weight: bold;
 
-}
+            }
 
-}
+        }
+        td{
+            font-size:30px;
+        }
     </style>
 </head>
 
@@ -117,15 +120,15 @@ font-weight: bold;
 
     <table border="1">
         <tbody id="tbody">
-            <tr class='item' style='background:yellow;font-weight:bold'> 
-                <td>姓名</td> 
-                <td>存档编号</td> 
-                <td>申请出库时间</td> 
-                <td>申请出库操作员</td> 
-                <td>数字化状态</td> 
-                <td>状态</td> 
-                <td>接取任务</td> 
-            </tr> 
+            <tr class='item' style='background:yellow;font-weight:bold'>
+                <td>姓名</td>
+                <td>存档编号</td>
+                <td>申请出库时间</td>
+                <td>申请出库操作员</td>
+                <td>数字化状态</td>
+                <td>状态</td>
+                <td>接取任务</td>
+            </tr>
         </tbody>
 
 
@@ -135,7 +138,7 @@ font-weight: bold;
 </body>
 
 <script>
-    
+
     $.ajax({
         async: false,
         type: 'get',

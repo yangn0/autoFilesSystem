@@ -4,14 +4,14 @@ import time
 import sys
 import traceback
 
-def Beijing_time():
-    r=requests.get('https://www.baidu.com')
-    t=time.strptime(r.headers['date'],'%a, %d %b %Y %H:%M:%S GMT')
-    return time.mktime(t)+28800
+# def Beijing_time():
+#     r=requests.get('https://www.baidu.com')
+#     t=time.strptime(r.headers['date'],'%a, %d %b %Y %H:%M:%S GMT')
+#     return time.mktime(t)+28800
 
-if(Beijing_time()-1680500272>=86400*2):
-    input("测试期已过，请联系作者。")
-    sys.exit()
+# if(Beijing_time()-1680500272>=86400*2):
+#     input("测试期已过，请联系作者。")
+#     sys.exit()
 
 headers='''
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
@@ -71,7 +71,7 @@ if __name__ == "__main__":
             fileidList.append(d["fileid"])
         print(tr_list)
         try:
-            r=requests.post("http://nas.yangning.work:1024/postList",json=tr_list)
+            r=requests.post("http://doctor10th.cn:1024/postList",json=tr_list)
         except:
             print("连接服务器失败")
             traceback.print_exc()

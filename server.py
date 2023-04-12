@@ -1,7 +1,8 @@
-from flask import Flask,request,render_template,g,jsonify
+from flask import Flask,request,render_template,g,jsonify,make_response
 import sqlite3
 
 DATABASE = './database.db'
+
 
 def check(db_name,table_name):
     conn = sqlite3.connect(db_name)
@@ -31,7 +32,9 @@ if (check(DATABASE,"tb") == False):
     cur.execute(sql_text_1)
 if (check(DATABASE,"tb_already") == False):
     sql_text_2 = '''CREATE TABLE tb_already
-            (   fileid varchar(40) primary key);
+            (   fileid varchar(40) primary key,
+                user varchar(40)
+            );
                 '''
     # 执行sql语句
     cur.execute(sql_text_2)
@@ -52,6 +55,24 @@ def teardown_request(exception):
         g.db.commit()
         g.db.close()
 
+@app.route("/set_cookies",methods = ['POST'])
+def set_cookies():
+    name=request.form['name']
+    # 设置响应体
+    resp = make_response("success")
+    # 设置coolie,默认有效期是临时cookie，浏览器关闭就失效
+    resp.set_cookie("name",name)
+    return resp
+
+# 获取cookie
+@app.route("/get_cookies")
+def get_cookies():
+    name = request.cookies.get("name")
+    # print(type(response))  # 类型为：str
+    if name ==None:
+        name='Null'
+    return name
+
 @app.route('/getList',methods = ['GET'])
 def getList():
     g.cur.execute("select * from tb;")
@@ -69,6 +90,7 @@ def getList():
         for u in fileList:
             if u[0]==fileid:
                 u[-1]="已接单"
+                u.append(i[1])
     return jsonify(fileList)
 
 @app.route('/postList',methods = ['POST'])
@@ -101,9 +123,11 @@ def postList():
 @app.route('/setAlready',methods = ['POST'])
 def setAlready():
     name_fileid=request.form['name']
+    user=request.form['user']
     print(name_fileid)
+    print(user)
     try:
-        g.cur.execute("insert into tb_already(fileid) values('%s');"%(name_fileid.split(' ')[0]))
+        g.cur.execute("insert into tb_already(fileid,user) values('%s','%s');"%(name_fileid.split(' ')[0],user))
     except:
         return "false"
     return name_fileid

@@ -115,7 +115,7 @@
         }
     </style>
 </head>
-
+姓名：<input id="user">
 <body>
 
     <table border="1">
@@ -138,7 +138,17 @@
 </body>
 
 <script>
-
+    $.ajax({
+        async: false,
+        type: 'get',
+        url: '/get_cookies',
+        data: {
+        },
+        success: function (data, stats) {
+            $("#user").val(data)
+        }
+    }
+    )
     $.ajax({
         async: false,
         type: 'get',
@@ -158,6 +168,7 @@
                     <td>"+ data[i][3] + "</td> \
                     <td>"+ data[i][4] + "</td> \
                     <td>"+ data[i][5] + "</td> \
+                    <td>"+ data[i][6]+ "</td> \
                 </tr> \
 					";
 
@@ -170,7 +181,7 @@
                     <td>"+ data[i][3] + "</td> \
                     <td>"+ data[i][4] + "</td> \
                     <td>"+ data[i][5] + "</td> \
-                    <td><input type='button' style='width:100px;height:60px' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
+                    <td><input type='button' class='j_Button' style='width:100px;height:60px' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
                 </tr> \
 					";
                 }
@@ -178,13 +189,14 @@
         }
     }
     )
-    $("input").click(function () {
+    $(".j_Button").click(function () {
         $.ajax({
             async: true,
             type: 'POST',
             url: '/setAlready',
             data: {
-                "name": this.name
+                "name": this.name,
+                "user": $("#user").val()
             },
 
             success: function (data) {
@@ -200,8 +212,20 @@
                 console.log('接单失败');
             }
         });
+        $.ajax({
+        async: false,
+        type: 'post',
+        url: '/set_cookies',
+        data: {
+            "name":$("#user").val()
+        },
+        success: function (data, stats) {
+            return "success";
+        }
+    }
+    );
 
     })
 </script>
 
-</html>
+</html

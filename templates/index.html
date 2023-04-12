@@ -115,7 +115,7 @@
         }
     </style>
 </head>
-姓名：<input id="user">
+姓名：<input id="user"><input id="set_user" type="button" value="提交">
 <body>
 
     <table border="1">
@@ -189,6 +189,20 @@
         }
     }
     )
+    $("#set_user").click(function () {
+        $.ajax({
+        async: false,
+        type: 'post',
+        url: '/set_cookies',
+        data: {
+            "name":$("#user").val()
+        },
+        success: function (data, stats) {
+            return "success";
+        }
+    }
+    );
+    });
     $(".j_Button").click(function () {
         $.ajax({
             async: true,
@@ -212,18 +226,7 @@
                 console.log('接单失败');
             }
         });
-        $.ajax({
-        async: false,
-        type: 'post',
-        url: '/set_cookies',
-        data: {
-            "name":$("#user").val()
-        },
-        success: function (data, stats) {
-            return "success";
-        }
-    }
-    );
+        
 
     })
 </script>

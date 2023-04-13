@@ -1,5 +1,6 @@
 from flask import Flask,request,render_template,g,jsonify,make_response
 import sqlite3
+import traceback
 
 DATABASE = './database.db'
 
@@ -129,6 +130,7 @@ def setAlready():
     try:
         g.cur.execute("insert into tb_already(fileid,user) values('%s','%s');"%(name_fileid.split(' ')[0],user))
     except:
+        traceback.print_exc()
         return "false"
     return name_fileid
 

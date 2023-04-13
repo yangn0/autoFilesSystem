@@ -115,7 +115,8 @@
         }
     </style>
 </head>
-姓名：<input id="user"><input id="set_user" type="button" value="提交">
+<!-- 姓名：<input id="user"> -->
+<!-- <input id="set_user" type="button" value="提交"> -->
 <body>
 
     <table border="1">
@@ -138,17 +139,16 @@
 </body>
 
 <script>
-    $.ajax({
-        async: false,
-        type: 'get',
-        url: '/get_cookies',
-        data: {
-        },
-        success: function (data, stats) {
-            $("#user").val(data)
-        }
+    function getQueryVariable(variable)
+{
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i=0;i<vars.length;i++) {
+        var pair = vars[i].split("=");
+        if(pair[0] == variable){return pair[1];}
     }
-    )
+    return(false);
+}
     $.ajax({
         async: false,
         type: 'get',
@@ -189,20 +189,7 @@
         }
     }
     )
-    $("#set_user").click(function () {
-        $.ajax({
-        async: false,
-        type: 'post',
-        url: '/set_cookies',
-        data: {
-            "name":$("#user").val()
-        },
-        success: function (data, stats) {
-            return "success";
-        }
-    }
-    );
-    });
+    
     $(".j_Button").click(function () {
         $.ajax({
             async: true,
@@ -210,7 +197,7 @@
             url: '/setAlready',
             data: {
                 "name": this.name,
-                "user": $("#user").val()
+                "user": decodeURI(getQueryVariable("user"))
             },
 
             success: function (data) {

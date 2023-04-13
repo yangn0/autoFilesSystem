@@ -46,11 +46,11 @@ if __name__ == "__main__":
     while(1):
         time.sleep(5)
         try:
-            r=requests.get(url,headers=headers)
-            soup = BeautifulSoup(r.text, 'lxml')
-            # with open("StdaglAction.html",'r',encoding="utf-8") as f:
-            #     r=f.read()
-            # soup = BeautifulSoup(r, 'lxml')
+            # r=requests.get(url,headers=headers)
+            # soup = BeautifulSoup(r.text, 'lxml')
+            with open("StdaglAction.html",'r',encoding="utf-8") as f:
+                r=f.read()
+            soup = BeautifulSoup(r, 'lxml')
             all_tr=soup.select('table')[-2].select('tr')[1:-2]
             tr_list=list()
         except:
@@ -72,6 +72,7 @@ if __name__ == "__main__":
         print(tr_list)
         try:
             r=requests.post("http://doctor10th.cn:1024/postList",json=tr_list)
+            # r=requests.post("http://127.0.0.1:1024/postList",json=tr_list)
         except:
             print("连接服务器失败")
             traceback.print_exc()

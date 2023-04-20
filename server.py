@@ -25,7 +25,7 @@ if (check(DATABASE,"tb") == False):
     sql_text_1 = '''CREATE TABLE tb
             (   fileid varchar(40) primary key,
                 name varchar(40),
-                time varchar(40),
+                reason varchar(40),
                 operator varchar(40),
                 status varchar(40));
                 '''
@@ -103,7 +103,7 @@ def postList():
         fileList.append(list(i.values()))
 
     # 插入多条语句，注意sqlite使用?做占位符
-    insert_many_sql = """insert into tb(name,fileid,time,operator,status) values(?,?,?,?,?);"""
+    insert_many_sql = """insert into tb(name,fileid,reason,operator,status) values(?,?,?,?,?);"""
     data_list = fileList
     g.cur.execute("delete from tb;")
     g.cur.executemany(insert_many_sql, data_list)

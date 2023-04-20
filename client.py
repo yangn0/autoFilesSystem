@@ -46,34 +46,35 @@ if __name__ == "__main__":
     while(1):
         time.sleep(5)
         try:
-            # r=requests.get(url,headers=headers)
-            # soup = BeautifulSoup(r.text, 'lxml')
-            with open("StdaglAction.html",'r',encoding="utf-8") as f:
-                r=f.read()
-            soup = BeautifulSoup(r, 'lxml')
+            r=requests.get(url,headers=headers)
+            soup = BeautifulSoup(r.text, 'lxml')
+            # with open("StdaglAction.html",'r',encoding="utf-8") as f:
+            #     r=f.read()
+            # soup = BeautifulSoup(r, 'lxml')
             all_tr=soup.select('table')[-2].select('tr')[1:-2]
             tr_list=list()
+        
+            fileidList=list()
+            for tr in all_tr:
+                d=dict()
+                d['name']=tr.select('td')[2].text
+                d["fileid"]=tr.select('td')[3].text
+                if(d["fileid"] in fileidList):
+                    continue
+                d["reason"]=tr.select('td')[4].text
+                d["operator"]=tr.select('td')[9].text
+                d["status"]=tr.select('td')[10].text
+                tr_list.append(d)
+                fileidList.append(d["fileid"])
+            print(tr_list)
         except:
             print("获取数据失败")
             traceback.print_exc()
-            continue
-        fileidList=list()
-        for tr in all_tr:
-            d=dict()
-            d['name']=tr.select('td')[2].text
-            d["fileid"]=tr.select('td')[3].text
-            if(d["fileid"] in fileidList):
-                continue
-            d["time"]=tr.select('td')[8].text
-            d["operator"]=tr.select('td')[9].text
-            d["status"]=tr.select('td')[10].text
-            tr_list.append(d)
-            fileidList.append(d["fileid"])
-        print(tr_list)
+            tr_list=[{'name':'工作机获取数据失败','name1':'工作机获取数据失败','name2':'工作机获取数据失败','name3':'工作机获取数据失败','name4':'工作机获取数据失败'}]
+
         try:
             r=requests.post("http://doctor10th.cn:1024/postList",json=tr_list)
-            # r=requests.post("http://127.0.0.1:1024/postList",json=tr_list)
+            # r=requests.post("http://192.168.123.32:1024/postList",json=tr_list)
         except:
             print("连接服务器失败")
             traceback.print_exc()
-        

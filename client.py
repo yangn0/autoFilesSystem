@@ -41,6 +41,7 @@ def trans(s):
 
 url="http://172.26.57.60/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dackCx"
 if __name__ == "__main__":
+    server=input("输入服务器地址:")
     cookie=input("输入cookie:")
     headers=trans(headers%cookie)
     while(1):
@@ -73,7 +74,7 @@ if __name__ == "__main__":
             tr_list=[{'name':'工作机获取数据失败','name1':'工作机获取数据失败','name2':'工作机获取数据失败','name3':'工作机获取数据失败','name4':'工作机获取数据失败'}]
 
         try:
-            r=requests.post("http://doctor10th.cn:1024/postList",json=tr_list)
+            r=requests.post("%s/postList"%server,json=tr_list)
             # r=requests.post("http://192.168.123.32:1024/postList",json=tr_list)
         except:
             print("连接服务器失败")

@@ -49,9 +49,11 @@ if __name__ == "__main__":
         try:
             r=requests.get(url,headers=headers)
             soup = BeautifulSoup(r.text, 'lxml')
+
             # with open("StdaglAction.html",'r',encoding="utf-8") as f:
             #     r=f.read()
             # soup = BeautifulSoup(r, 'lxml')
+
             all_tr=soup.select('table')[-2].select('tr')[1:-2]
             tr_list=list()
         

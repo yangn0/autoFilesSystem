@@ -3,12 +3,16 @@
 
 <head>
 
-    <meta http-equiv="refresh" content="10">
+    <!-- <meta http-equiv="refresh" content="10"> -->
     <meta charset="utf-8">
     <title>档案接单</title>
     <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.js"></script>
     <style>
+
+        body {
+            background-color:rgb(211,226,249);
+        }
         table {
 
             border: 1px solid #ccc;
@@ -110,13 +114,15 @@
             }
 
         }
-        td{
-            font-size:30px;
+
+        td {
+            font-size: 30px;
         }
     </style>
 </head>
 <!-- 姓名：<input id="user"> -->
 <!-- <input id="set_user" type="button" value="提交"> -->
+
 <body>
 
     <table border="1">
@@ -139,28 +145,59 @@
 </body>
 
 <script>
-    function getQueryVariable(variable)
-{
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i=0;i<vars.length;i++) {
-        var pair = vars[i].split("=");
-        if(pair[0] == variable){return pair[1];}
-    }
-    return(false);
-}
-    $.ajax({
-        async: false,
-        type: 'get',
-        url: '/getList',
-        data: {
-        },
-        dataType: 'json',
-        success: function (data, stats) {
 
-            for (var i = 0, len = data.length; i < len; i++) {
-                if (data[i][5] == "已接单") {
-                    window.document.getElementById("tbody").innerHTML += "\
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) { return pair[1]; }
+        }
+        return (false);
+    }
+
+    // 创建<audio>标签(参数:音频文件路径)
+    const audio = new Audio('static/dack.mp4');
+    audio.loop = false;
+    var last_num = [];
+    function getList() {
+        $.ajax({
+            async: false,
+            type: 'get',
+            url: '/getList',
+            data: {
+            },
+            dataType: 'json',
+            success: function (data, stats) {
+                // audio
+                for (var i = 0, len = data.length; i < len; i++) {
+                    if (data[i][5] != "已接单") {
+                        if (last_num.includes(data[i][0])) {
+
+                        } else {
+                            console.log("play");
+                            audio.play();
+                            break;
+                        }
+                    }
+                }
+
+                last_num = [];
+                window.document.getElementById("tbody").innerHTML = "\
+                <tr class='item' style='background:yellow;font-weight:bold'>\
+                <td>姓名</td>\
+                <td>存档编号</td>\
+                <td>借用原因</td>\
+                <td>申请出库操作员</td>\
+                <td>数字化状态</td>\
+                <td>状态</td>\
+                <td>接取任务</td>\
+            </tr>\
+                "
+
+                for (var i = 0, len = data.length; i < len; i++) {
+                    if (data[i][5] == "已接单") {
+                        window.document.getElementById("tbody").innerHTML += "\
                 <tr class='item' style='background:rgb(149,236,105);'> \
                     <td>"+ data[i][1] + "</td > \
                     <td>"+ data[i][0] + "</td> \
@@ -168,12 +205,13 @@
                     <td>"+ data[i][3] + "</td> \
                     <td>"+ data[i][4] + "</td> \
                     <td>"+ data[i][5] + "</td> \
-                    <td>"+ data[i][6]+ "</td> \
+                    <td>"+ data[i][6] + "</td> \
                 </tr> \
 					";
 
-                } else {
-                    window.document.getElementById("tbody").innerHTML += "\
+                    } else {
+                        last_num.push(data[i][0]);
+                        window.document.getElementById("tbody").innerHTML += "\
                 <tr class='item'> \
                     <td>"+ data[i][1] + "</td > \
                     <td>"+ data[i][0] + "</td> \
@@ -184,13 +222,17 @@
                     <td><input type='button' class='j_Button' style='width:100px;height:60px' name='"+ data[i][0] + " " + data[i][1] + "' value='接单'></td>\
                 </tr> \
 					";
+                    }
                 }
             }
         }
+        );
     }
-    )
-    
-    $(".j_Button").click(function () {
+
+    getList();
+    setInterval(getList, 10000);
+
+    $(document).on("click", ".j_Button", function () {
         $.ajax({
             async: true,
             type: 'POST',
@@ -203,19 +245,20 @@
             success: function (data) {
                 if (data == "false") {
                     alert("这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)");
-                    location.reload();
+                    // location.reload();
+                    getList();
                 } else {
                     alert("接单：" + data);
-                    location.reload();
+                    // location.reload();
+                    getList();
                 }
             },
             error: function () {
                 console.log('接单失败');
             }
         });
-        
-
     })
+
 </script>
 
 </html>

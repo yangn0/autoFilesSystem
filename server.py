@@ -123,12 +123,16 @@ def postList():
 
 @app.route('/setAlready',methods = ['POST'])
 def setAlready():
-    name_fileid=request.form['name']
-    user=request.form['user']
+    name_fileid = request.form['name']
+    user = request.form['user']
     print(name_fileid)
     print(user)
+    if name_fileid.split(' ')[0]=="工作机获取数据失败":
+        return "work_device" # 禁止工作机接单
     try:
-        g.cur.execute("insert into tb_already(fileid,user) values('%s','%s');"%(name_fileid.split(' ')[0],user))
+        g.cur.execute(
+            "insert into tb_already(fileid,user) values('%s','%s');" %
+            (name_fileid.split(' ')[0], user))
     except:
         traceback.print_exc()
         return "false"
@@ -136,7 +140,7 @@ def setAlready():
 
 @app.route('/dack',methods = ['GET'])
 def dack():
-   return render_template("index.html")
+    return render_template("index.html")
 
 if __name__ == '__main__':
-   app.run("0.0.0.0","1024")
+    app.run("0.0.0.0","1024")

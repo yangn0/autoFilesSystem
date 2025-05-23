@@ -158,6 +158,7 @@
 
     // 创建<audio>标签(参数:音频文件路径)
     const audio = new Audio('static/dack.mp4');
+    const offline_audio = new Audio('static/offline.wav');
     audio.loop = false;
     var last_num = [];
     function getList() {
@@ -169,15 +170,18 @@
             },
             dataType: 'json',
             success: function (data, stats) {
-                // audio
-                for (var i = 0, len = data.length; i < len; i++) {
-                    if (data[i][5] != "已接单") {
-                        if (last_num.includes(data[i][0])) {
+                if (data[0][0] == "工作机获取数据失败" ) {
+                    offline_audio.play();
+                }else{
+                    for (var i = 0, len = data.length; i < len; i++) {
+                        if (data[i][5] != "已接单") {
+                            if (last_num.includes(data[i][0])) {
 
-                        } else {
-                            console.log("play");
-                            audio.play();
-                            break;
+                            } else {
+                                console.log("play");
+                                audio.play();
+                                break;
+                            }
                         }
                     }
                 }
@@ -230,6 +234,7 @@
     }
 
     getList();
+    alert("你好, " + decodeURI(getQueryVariable("user")));  
     setInterval(getList, 10000);
 
     $(document).on("click", ".j_Button", function () {
@@ -247,7 +252,11 @@
                     alert("这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)");
                     // location.reload();
                     getList();
-                } else {
+                } else if(data == "work_device"){
+                    alert("禁止接这一单！");
+                    // location.reload();
+                    getList();
+                }else {
                     alert("接单：" + data);
                     // location.reload();
                     getList();

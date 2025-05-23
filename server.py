@@ -185,8 +185,21 @@ def getRank():
         strftime('%Y-%m-%d', "timestamp", 'unixepoch') AS day, 
         COUNT(*) AS record_count 
         FROM tb_rank
-        GROUP BY "user", day 
-        ORDER BY "user", day;''')
+        WHERE day = strftime('%Y-%m-%d', 'now')
+        GROUP BY "user", day
+        ORDER BY record_count DESC;''')
+    data = g.cur.fetchall()
+    return data
+
+
+@app.route('/getStatistics', methods=['GET'])
+def getStatistics():
+    # 获取user一天内接单数量
+    g.cur.execute('''SELECT 
+                    "user", 
+                    COUNT(*) AS record_count 
+                    FROM tb_rank GROUP BY "user" ORDER BY record_count DESC;'''
+                  )
     data = g.cur.fetchall()
     return data
 

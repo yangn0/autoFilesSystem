@@ -20,7 +20,8 @@ def check(db_name, table_name):
     else:
         return True  # 不能建表
 
-overtime=15
+
+overtime = 15
 conn = sqlite3.connect(DATABASE)
 #创建一个游标 cursor
 cur = conn.cursor()
@@ -35,6 +36,7 @@ if (check(DATABASE, "tb") == False):
                 '''
     # 执行sql语句
     cur.execute(sql_text_1)
+
 if (check(DATABASE, "tb_already") == False):
     sql_text_2 = '''CREATE TABLE tb_already
             (   fileid varchar(40) primary key,
@@ -44,6 +46,17 @@ if (check(DATABASE, "tb_already") == False):
                 '''
     # 执行sql语句
     cur.execute(sql_text_2)
+
+if (check(DATABASE, "tb_rank") == False):
+    sql_text_3 = '''CREATE TABLE tb_rank
+                    (   id INTEGER PRIMARY KEY,
+                        fileid varchar(40),
+                        user varchar(40),
+                        timestamp DATETIME
+                    );
+                '''
+    # 执行sql语句
+    cur.execute(sql_text_3)
 
 
 def connect_db():
@@ -122,11 +135,11 @@ def postList():
     g.cur.executemany(insert_many_sql, data_list)
     g.db.commit()
     #把List中没有的从already表中删除
-    # g.cur.execute("select * from tb_already;")
+    g.cur.execute("select * from tb_already;")
     # print(g.cur.fetchall())
-    # g.cur.execute(
-    #     "DELETE FROM tb_already where (select count(1) as num from tb where tb_already.fileid = tb.fileid) = 0;"
-    # )
+    g.cur.execute(
+        "DELETE FROM tb_already where (select count(1) as num from tb where tb_already.fileid = tb.fileid) = 0;"
+    )
     return "success"
 
 
@@ -137,25 +150,45 @@ def setAlready():
     print(name_fileid)
     print(user)
     if name_fileid.split(' ')[0] == "工作机获取数据失败":
-        return {"errno":"false","data":"禁止接这一单！"}  # 禁止工作机接单
+        return {"errno": "false", "data": "禁止接这一单！"}  # 禁止工作机接单
+    # 获取user最近一次记录，如果没有则下一步
+    g.cur.execute('''SELECT * FROM tb_already
+        WHERE user = '%s'
+        ORDER BY timestamp DESC
+        LIMIT 1;''' % user)
+    values = g.cur.fetchall()
+    if (len(values) >= 1):
+        latest_time = values[0][2]
+        if (time.time() - latest_time <= overtime):
+            return {"errno": "false", "data": "接单太快啦！请%d秒后再接下一单" % overtime}
+
     try:
-        # 获取user最近一次记录，如果没有则下一步
-        g.cur.execute('''SELECT * FROM tb_already
-            WHERE user = '%s'
-            ORDER BY timestamp DESC
-            LIMIT 1;''' % user)
-        values = g.cur.fetchall()
-        if(len(values)>=1):
-            latest_time=values[0][2]
-            if(time.time()-latest_time<=overtime):
-                return {"errno":"false","data":"接单太快啦！请%d秒后再接下一单"%overtime}
+        now_time = time.time()
         g.cur.execute(
             "insert into tb_already(fileid,user,timestamp) values('%s','%s','%d');"
-            % (name_fileid.split(' ')[0], user, time.time()))
+            % (name_fileid.split(' ')[0], user, now_time))
+        g.cur.execute(
+            "insert into tb_rank(fileid,user,timestamp) values('%s','%s','%d');"
+            % (name_fileid.split(' ')[0], user, now_time))
     except:
         traceback.print_exc()
-        return {"errno":"false","data":"这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)"}
-    return {"errno":"success","data":name_fileid}
+        return {"errno": "false", "data": "这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)"}
+
+    return {"errno": "success", "data": name_fileid}
+
+
+@app.route('/getRank', methods=['GET'])
+def getRank():
+    # 获取user一天内接单数量
+    g.cur.execute('''SELECT 
+        "user", 
+        strftime('%Y-%m-%d', "timestamp", 'unixepoch') AS day, 
+        COUNT(*) AS record_count 
+        FROM tb_rank
+        GROUP BY "user", day 
+        ORDER BY "user", day;''')
+    data = g.cur.fetchall()
+    return data
 
 
 @app.route('/dack', methods=['GET'])

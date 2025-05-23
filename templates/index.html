@@ -142,6 +142,17 @@
 
     </table>
 
+    <table border="1">
+        <tbody id="rank">
+            <tr class='item' style='background:yellow;font-weight:bold'>
+                <td>姓名</td>
+                <td>日期</td>
+                <td>接单数</td>
+            </tr>
+        </tbody>
+
+
+    </table>
 </body>
 
 <script>
@@ -188,16 +199,15 @@
 
                 last_num = [];
                 window.document.getElementById("tbody").innerHTML = "\
-                <tr class='item' style='background:yellow;font-weight:bold'>\
-                <td>姓名</td>\
-                <td>存档编号</td>\
-                <td>借用原因</td>\
-                <td>申请出库操作员</td>\
-                <td>数字化状态</td>\
-                <td>状态</td>\
-                <td>接取任务</td>\
-            </tr>\
-                "
+                    <tr class='item' style='background:yellow;font-weight:bold'>\
+                        <td>姓名</td>\
+                        <td>存档编号</td>\
+                        <td>借用原因</td>\
+                        <td>申请出库操作员</td>\
+                        <td>数字化状态</td>\
+                        <td>状态</td>\
+                        <td>接取任务</td>\
+                    </tr>"
 
                 for (var i = 0, len = data.length; i < len; i++) {
                     if (data[i][5] == "已接单") {
@@ -232,10 +242,37 @@
         }
         );
     }
-
+    function getRank() {
+        $.ajax({
+            async: false,
+            type: 'get',
+            url: '/getRank',
+            data: {
+            },
+            dataType: 'json',
+            success: function (data, stats) {
+                window.document.getElementById("rank").innerHTML = "\
+                    <tr class='item' style='background:yellow;font-weight:bold'> \
+                        <td>姓名</td> \
+                        <td>日期</td> \
+                        <td>接单数</td> \
+                    </tr>"
+                for (var i = 0, len = data.length; i < len; i++) {
+                        window.document.getElementById("rank").innerHTML += "\
+                            <tr class='item' style='background:rgb(149,236,105);'> \
+                                <td>"+ data[i][0] + "</td > \
+                                <td>"+ data[i][1] + "</td> \
+                                <td>"+ data[i][2] + "</td> \
+                            </tr>";
+                }
+            }
+        });
+    }
     getList();
+    getRank();
     alert("你好, " + decodeURI(getQueryVariable("user")));  
     setInterval(getList, 10000);
+    setInterval(getRank, 10000);
 
     $(document).on("click", ".j_Button", function () {
         $.ajax({
@@ -248,19 +285,15 @@
             },
 
             success: function (data) {
-                if (data == "false") {
-                    alert("这一单被抢走啦，点击确定回到列表继续抢单吧(*￣︶￣)");
+                if(data["errno"]=="success"){
+                    alert("接单：" + data["data"]);
                     // location.reload();
                     getList();
-                } else if(data == "work_device"){
-                    alert("禁止接这一单！");
+                } else if (data["errno"] == "false") {
+                    alert(data['data']);
                     // location.reload();
                     getList();
-                }else {
-                    alert("接单：" + data);
-                    // location.reload();
-                    getList();
-                }
+                } 
             },
             error: function () {
                 console.log('接单失败');

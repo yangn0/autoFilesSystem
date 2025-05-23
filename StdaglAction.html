@@ -1,0 +1,540 @@
+<!DOCTYPE HTML>
+<!--
+####################################################################
+#  版   本：  1.0
+#  版权所有： 北京北控三兴信息技术有限公司
+#  制 作 人： 刘冰
+#  制作日期： 2013年11月26日
+#  IPO图编号：
+#  文 件 名： dwgrdackqr.jsp
+####################################################################
+#  修 改 人： 
+#  修改原因： 
+#  修改日期： 
+####################################################################
+-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<link href="/rsdagl/styles/5/css/common.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/rsdagl/common/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="/rsdagl/common/js/jquery/validator-it.js"></script>
+<script type="text/javascript" src="/rsdagl/common/js/jquery/format.js"></script>
+<script type="text/javascript" src="/rsdagl/rsdagl/common/xxxx.js"></script>
+<script type="text/javascript" src="/rsdagl/common/js/jquery/jquery.messager.js"></script>
+</head>
+<body>
+<form name="form1" action="" method="post" id="form1" msgtype="1" validate="submit">
+
+
+
+
+
+
+
+
+
+
+<input type="hidden" name="_resid" value="0000210051">
+<link href="/rsdagl/styles/5/css/jquery.loadmask.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/rsdagl/common/js/jquery/tools/zdycx/jquery.zdycx.divbox.js"></script>
+<div class="loadmask-msg" id="disablediv" style="display:none;">
+<div>页面加载中</div>
+</div>
+<script type="text/javascript">
+if(window.jQuery){
+  $("body").ready(function(){
+	$("#disablediv").OpenDiv();
+  });
+  
+  $().ready(function(){
+	$("#disablediv").CloseDiv();
+  });
+	
+  function _alert(_message){
+    /**
+     * 返回值为-1：没有alert提示，页面也不显示提示信息(未执行此方法)。
+     * 返回值为0： 没有alert提示，页面也不显示提示信息。
+     * 返回值是1： 只显示提示信息。
+     * 返回值是2： 只有alert提示信息。
+     * 返回值是3： 既有alert提示信息，也有页面显示信息。
+    **/
+    var msg = $.trim(_message);
+    var flag = -1;
+    if("null"=="null"){
+      flag = 0;
+      // 如果之前没有提示信息
+      if("1"!="null" && "1"=="1" && msg!=""){
+        // 提示信息
+        if("true"=="true"){
+          alert(msg);
+        }
+        flag += 2;
+      }
+      if("1"!="null" && "1"=="1" && msg!="" && "true"=="true"){
+        // 页面显示信息
+        var tdnr = "";
+        if($("iframe").contents().find(".title").size()>0){
+          //i frame显示信息
+          // 设置table中最后一个td的style
+          $("iframe").contents().find(".title").eq(0).children().children().find(".end").attr("style","padding-top:4px");
+          // 去掉之前添加的内容
+          $("iframe").contents().find(".title").eq(0).children().children().find(".end").find("#jynr").remove();
+          // 取得td中的内容
+          tdnr = $("iframe").contents().find(".title").eq(0).children().children().find(".end").html();
+          // 重新拼写td中的内容
+          tdnr = "<span id='jynr' style='color:red'>"+msg+"&nbsp;&nbsp;</span>"+tdnr;
+          $("iframe").contents().find(".title").eq(0).children().children().find(".end").html(tdnr);
+          // 将拼写好的内容添加到td中
+        }
+        if($(".title").size()>=2&&$("iframe").contents().find(".title").size()==0){
+          // 如果没有iframe，在第2个Title上显示信息
+          // 设置table中最后一个td的style
+          $(".title").eq(1).children().children().find(".end").attr("style","padding-top:4px");
+          // 去掉之前添加的内容
+          $(".title").eq(1).children().children().find(".end").find("#jynr").remove();
+          // 取得td中的内容
+          tdnr = $(".title").eq(1).children().children().find(".end").html();
+          // 重新拼写td中的内容
+          tdnr = "<span id='jynr' style='color:red'>"+msg+"&nbsp;&nbsp;</span>"+tdnr;
+          // 将拼写好的内容添加到td中
+          $(".title").eq(1).children().children().find(".end").html(tdnr);
+        }
+        flag +=1;
+      }
+    }
+    return flag;
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+<link href="/rsdagl/styles/5/css/jquery.loadmask.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/rsdagl/rsdagl/common/sfzydq/sfzydcx.js"></script>
+
+<div class="loadmask-msg" id="disablediv" style="display:none;">
+<div>页面加载中</div>
+</div>
+<script type="text/javascript">
+var _ReadCard;
+$(function(){
+  //其他区走这个驱动
+	    $("body").append('<object classid="clsid:B5915A25-5770-4309-B2DF-6B60856CDA21" id="IDCardOcx"  width="0" height="0" ></object>');
+ 
+  		 _ReadCard =setInterval("temp()", 500);
+});
+var temsfz;
+function temp(){
+	  var data=readIDCardByLT();
+	  if(data!=null){
+	var json = $.parseJSON(data); 
+	if(json.code==200){
+	temsfz=$.trim($("[name=sfzhm]").val())
+	$("[name='sfzhm']").val(json.hm);
+	$("[name='xm']").val(json.xm);
+        if($("[name=sfzhm]").val()!="" && temsfz!=$("[name=sfzhm]").val()){
+        	temsfz=json.hm;
+          // =======================================清除页面信息-开始====================================================================
+          $(".sfzyd").attr("value","");// 将class为sfzyd的value清空
+      	  $(".sfzyd").find("select").each(function(i,obj){// 将class为sfzyd的作用域内select的value清空，并执行onchange事件
+      	    if($(obj).attr("disabled")!="disabled"){
+      	      $(obj).not(".v_sfzyd").find("option").first().attr("selected","selected");
+      	      $(obj).not(".v_sfzyd").change();
+      	    }
+      	  });
+      	  $(".sfzyd").find("input").not("[type=button]").each(function(i,obj){// 将class为sfzyd的作用域内input的value清空
+      	    if($(obj).attr("disabled")!="disabled"){// disable的input不清空
+      	      $(obj).not(".v_sfzyd").attr("value","");
+      	    }
+      	    if($(obj).attr("type")=="checkbox" || $(obj).attr("type")=="radio"){// 将class为sfzyd的作用域内checkbox、radio的value清空，并执行onclick事件
+      	      if($(obj).not(".v_sfzyd").attr("checked")=="checked"){
+      	        $(obj).attr("checked",false);
+      	        $(obj).click();
+      	        $(obj).attr("checked",false);
+      	      }
+      	    }
+      	  });
+      	  $(".sfzyd").not(".v_sfzyd").find("textarea").attr("value","");// 将class为sfzyd的作用域内textarea的value清空
+          // =======================================清除页面信息-结束====================================================================
+      	  $("[name=sfzhm]").val(json.hm);
+          $("[name=xm]").val(json.xm);
+          if(_sfzydURL=="" && _formName==""){
+            sfzydCx();
+          }else{
+            $("[name='"+_formName+"']").attr("action",_sfzydURL);
+            $("[name='"+_formName+"']").submit();          
+          }
+        }
+        }}
+	  
+}
+var _sfzydURL = "";
+var _formName = "";
+function _setSfzyd(sfzydURL,formName){
+  _sfzydURL = sfzydURL;
+  _formName = formName;
+}
+
+
+
+//=================================================================================================
+//=========================================档案影像查看=============================================
+//=================================================================================================
+function archiveviewNew(daid, bj, dy, tsjmdabs, sfzhm, xm, cdbh, xt, sysy) {
+	if (tsjmdabs == '1') {
+		alert("此人影像调阅受限");
+		return;
+	}
+	var url = "/rsdagl/rsdagl/archiveimage/ArchiveImageAction.do?method=getLsh";
+	var xm1 = encodeURI(xm);
+	var params = {daid:daid, bj:bj, dy:dy, sfzhm:sfzhm, xm:xm1, cdbh:cdbh, xt:xt, sysy:sysy};
+  	$.post(url, params, function (data, textStatus) {
+    	if ("success" == textStatus) {
+	  		if (data.msg!='') {
+	  			alert(data.msg);
+	  			return;
+	  		}else{
+				var lsh = data.lsh;
+				//将lsh写到父页面的lsh字段
+				var lshInput = window.parent.document.getElementsByName("yxdylsh");
+				if (lshInput && lshInput.length > 0) {
+					lshInput[0].value = lsh;
+				}
+				//打开新的窗口查看影像
+				var imageurl = "/rsdagl/common/tools/archiveimage/archiveimage.jsp?daid=" + daid + "&lsh=" + lsh;
+				window.open(imageurl, "", "top=100; left=100; width=800; height=600 channelmode=1 scrollbars=yes,resizable=yes");
+			}
+    	}
+  	}, "json");
+}
+//=================================================================================================
+//=========================================档案影像查看=============================================
+//=================================================================================================
+
+
+
+
+</script>
+<table width="98%"  border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td height="30" valign="middle" class="dqwz">当前位置：人事档案管理 &gt; 实体档案管理  &gt; 档案入/出库管理</td>
+  </tr>
+  <tr>
+    <td height="8" background="/rsdagl/styles/5/images/right/dsline.gif"></td>
+  </tr>
+  <tr>
+    <td height="20" valign="bottom" class="tagbg">
+	  <table height="18" border="0" cellpadding="0" cellspacing="0">
+		<tr>
+		  <td><table height='33' border='0' cellspacing='0' cellpadding='0' class='tag_n'><tr><td class='n1'></td><td class='n2'><a href='/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=darkCx' class='link04'>档案入库</a></td><td class='n3'></td></tr></table></td>
+<td><table height='33' border='0' cellspacing='0' cellpadding='0' class='tag_a'><tr><td class='n1'></td><td class='n2'>档案出库</td><td class='n3'></td></tr></table></td>
+<td><table height='33' border='0' cellspacing='0' cellpadding='0' class='tag_n'><tr><td class='n1'></td><td class='n2'><a href='/rsdagl/rsdagl/stdagl/darckgl/dacrkcx.jsp' class='link04'>档案入/出库查询</a></td><td class='n3'></td></tr></table></td>
+<td><table height='33' border='0' cellspacing='0' cellpadding='0' class='tag_n'><tr><td class='n1'></td><td class='n2'><a href='/rsdagl/rsdagl/stdagl/darckgl/dghdacx.jsp' class='link04'>待归还档案查询</a></td><td class='n3'></td></tr></table></td>
+
+		</tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="title">
+  	<tr>
+		<td width="30" height="26"><img src="/rsdagl/styles/5/css/bb_d.gif" width="30" height="26"></td>
+	    <td style="padding-top:4px" >查询条件</td>
+	    <td align="right" style="padding-top:4px" class="end"><a href="#" onclick="kscx('/rsdagl')">快速查询</a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  	</tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="sfzyd">  
+  	<tr class="line1">
+	    <td width="15%" align="right" class="right5">身份证号码</td>
+	    <td width="35%" colspan="3"><input type="text" name="sfzhm" style="WIDTH: 100%" value="" valiflag="18,sfzhm,身份证号码,true"></td>         	
+	    <td width="15%" align="right" class="right5">姓&nbsp;&nbsp;&nbsp;&nbsp;名</td>
+	    <td width="35%" colspan="3"><input type="text" name="xm"  style='width:100%'  valiflag="64" value=""></td>     
+  	</tr>
+  	<tr class="line2">
+	    <td align="right" class="right5">(暂)存档编号</td>
+	    <td colspan="3"><input type="text" name="zcdbh"  style='width:100%'  valiflag="20" value=""></td>
+	    <td align="right"  class="right5">单位名称</td>
+	    <td colspan="3"><input type="text" name="dwmc" style="WIDTH: 100%" value=""  valiflag="128"></td>         	
+	</tr>   
+	<tr class="line1">
+	    <td align="right" style="WIDTH: 19%" class="right5">单位统一社会信用代码<br>（组织机构代码）</td>
+	    <td colspan="3"><input type="text" name="zzjgdm" style="WIDTH: 100%" class="zzjgdm" value=""></td>
+	    <td align="right"  class="right5">单位立户编号</td>
+	    <td colspan="3" ><input type="text" name="dwlhbh" style="WIDTH: 100%" value=""  valiflag="32"></td>
+	</tr>
+	<tr class="line2">
+	  	<!-- <td align="right" class="right5">存档日期</td>
+	  	<td width="15%"><input type="text" style="width:100%" class="dateYmd" name="cdrqq"></td>
+	  	<td width="5%" align="center">至</td>
+	  	<td width="15%"><input type="text" style="width:100%" class="dateYmd" name="cdrqz"
+	  		valiflag="14,date,存档日期止,true" relation="ge cdrqq" relmsg="存档日期止应大于等于存档日期起"></td> -->
+		<td align="right" class="right5">存档登记时间</td>
+		<td align='center' width="15%"><input type='text' style='width:100%' class="dateYmd" name="cddjsjq" value=""></td>
+		<td width="5%" align="center">至</td>
+		<td width="15%"><input type='text' style='width:100%' class="dateYmd" name="cddjsjz" value="" valiflag="14,date,存档登记时间止,true" relation="ge cddjsjq" relmsg="存档登记时间止应大于等于存档登记时间起" ></td>
+		<td align="right" class="right5">库房类型</td>
+		<td colspan="3">
+      		<select style="width:100%" name="kflx">
+			    <option value="">请选择</option>
+				<option value="01" >正式库</option>
+				<option value="02" >暂存库</option>
+				<option value="03" >临时库</option>
+	  		</select>
+		</td>
+  	</tr>
+	<tr class="line1">
+		<td align="right" class="right5">出库类型</td>
+		<td colspan="3">
+			<select style="width:100%" name="cklx">
+				<option value="">请选择</option>
+				<option value="01" >档案内借</option>
+<option value="02" >档案转出</option>
+<option value="03" >档案外借</option>
+
+			</select>
+		</td>
+		<td align="right" class="right5"></td>
+		<td colspan="3"></td>
+	</tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr class="BUTTONsBG">
+	<td align="center">
+	  <input name="cx" type="button" class="BUTTONs3" value="查 询" onclick="chaxun()">&nbsp;&nbsp;&nbsp;&nbsp;
+	  <input name="cx" type="button" class="BUTTONs3" value="重 置" onclick="qk()"></td>
+  </tr>
+</table>
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0" class="title">
+  <tr>
+	<td width="30" height="26"><img src="/rsdagl/styles/5/css/bb_d.gif" width="30" height="26"></td>
+	<td style="padding-top:4px" class="end">共【2】条查询结果</td>
+  </tr>
+</table>    
+<table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr align="center" class="line4">
+    <td width="3%">序号</td>
+    <td width="12%">身份证号码</td>
+    <td width="7%">姓名</td>
+    <td width="8%">(暂)存档编号</td>
+    <td width="9%">借用原因</td>
+    <td width="9%">库房类型</td>
+    <td width="9%">库房分类</td>
+    <td width="12%">档案存放位置</td>
+    <td width="10%">申请出库时间</td>
+	<td width="9%">申请出库操作员</td>
+	<td width="7%">数字化状态</td>
+	<td width="5%">选择</td>
+  </tr>
+  
+  <tr align="center" class="line2">
+    <td >1</td>
+    <td>110101196307271038</td>
+    
+    <td><a href="javascript:ryxxxx('7d8c3459849c00','7e4be159415300','jcxx','/rsdagl/rsdagl/xxxx/action/XxxxAction.do?method=')">张智杰</a></td>
+    
+    <td>1211231235938221</td>
+    <td>流动党员服务</td>
+    <td>正式库</td>
+    <td>朝阳公服</td>
+    <td><input type='hidden' name="dacfwz" value=""></td>
+    <td>2023-03-31</td>
+    <td>刘洪生1</td>
+    <td>数字化加工完成</td>
+    <td><input type="checkbox"  name="ckids"   class="radio" id="del" value="01,fb73fb50ac0100,7e4be159415300"></td>
+    </tr>
+
+  <tr align="center" class="line2">
+	<td >1</td>
+	<td>110101196307271038</td>
+	
+	<td><a href="javascript:ryxxxx('7d8c3459849c00','7e4be159415300','jcxx','/rsdagl/rsdagl/xxxx/action/XxxxAction.do?method=')">张智杰</a></td>
+	
+	<td>12112312359238</td>
+	<td>流动党员服务</td>
+	<td>正式库</td>
+	<td>朝阳公服</td>
+	<td><input type='hidden' name="dacfwz" value=""></td>
+	<td>2023-03-31</td>
+	<td>刘洪生</td>
+	<td>数字化加工完成</td>
+	<td><input type="checkbox"  name="ckids"   class="radio" id="del" value="01,fb73fb50ac0100,7e4be159415300"></td>
+  </tr>
+
+  <tr align="center" class="line2">
+    <td >1</td>
+    <td>110101196307271038</td>
+    
+    <td><a href="javascript:ryxxxx('7d8c3459849c00','7e4be159415300','jcxx','/rsdagl/rsdagl/xxxx/action/XxxxAction.do?method=')">张智杰</a></td>
+    
+    <td>11123112312321321231111</td>
+    <td>流动党员服务</td>
+    <td>正式库</td>
+    <td>朝阳公服</td>
+    <td><input type='hidden' name="dacfwz" value=""></td>
+    <td>2023-03-31</td>
+    <td>刘洪生</td>
+    <td>数字化加工完成</td>
+    <td><input type="checkbox"  name="ckids"   class="radio" id="del" value="01,fb73fb50ac0100,7e4be159415300"></td>
+    </tr>
+  
+  <tr align="center" class="line1">
+	<td >2</td>
+	<td>110102199905101119</td>
+	
+	<td>潘九安</td>
+	
+	<td>1123123Z0123001231230121331111</td>
+	<td>暂存档案处理</td>
+	<td>暂存库</td>
+	<td>--</td>
+	<td><input type='hidden' name="dacfwz" value=""></td>
+	<td>2023-03-31</td>
+	<td>刘晓玲</td>
+	<td></td>
+	<td><input type="checkbox"  name="ckids"   class="radio" id="del" value="02,fb73fb4e9d2200,fb573b0ec92d00"></td>
+  </tr>
+
+  <tr align="center" class="line1">
+    <td >3</td>
+    <td>110102199905101119</td>
+    
+    <td>潘九安</td>
+    
+    <td>1123123Z012300123123012133111111</td>
+    <td>暂存档案处理</td>
+    <td>暂存库</td>
+    <td>--</td>
+    <td><input type='hidden' name="dacfwz" value=""></td>
+    <td>2023-03-31</td>
+    <td>刘晓玲</td>
+    <td></td>
+    <td><input type="checkbox"  name="ckids"   class="radio" id="del" value="02,fb73fb4e9d2200,fb573b0ec92d00"></td>
+    </tr>
+
+  <tr align="center" class="line1">
+    <td >3</td>
+    <td>110102199905101119</td>
+    
+    <td>潘九安</td>
+    
+    <td>1123123Z01230aaaa11111</td>
+    <td>暂存档案处理</td>
+    <td>暂存库</td>
+    <td>--</td>
+    <td><input type='hidden' name="dacfwz" value=""></td>
+    <td>2023-03-31</td>
+    <td>刘晓玲</td>
+    <td></td>
+    <td><input type="checkbox"  name="ckids"   class="radio" id="del" value="02,fb73fb4e9d2200,fb573b0ec92d00"></td>
+    </tr>
+  <tr align="center" class="line2"  >
+	<td colspan="11" align="right">全选</td>
+	<td ><input type="checkbox"  cboname="ckids"   class="radio" id="del4"></td>
+  </tr>
+  <tr class="BUTTONsBG">
+    <td colspan="12" align="center">
+      <input name="tj" type="button" class="BUTTONs3" value="出 库" onclick="chuku()">&nbsp;&nbsp;&nbsp;&nbsp;
+	  <input type="button" class="BUTTONs3" value="撤 销" onclick="chexiao()" name="cxx"/>
+	</td>
+  </tr>
+  
+</table>
+<table  width="98%" border="0" align="center" cellpadding="0" cellspacing="0" >
+<tr><td><input type="hidden" name="dacfwzs"/></td></tr>
+</table>
+</form>
+</body>
+<script>
+function chaxun(){
+  if(validate("form1")==false){
+    return;
+  }
+  $("#form1").attr("action","/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dackCx");
+  $("input[type='button']").attr("disabled","disabled");
+  $("#form1").submit();
+}
+_setSfzyd("/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dackCx","form1");
+// 出库确认
+function chuku(){
+  var len=$("[name='ckids']:checked").length;
+  if(len==0){
+    alert("请至少选择一条记录！");
+    return;
+  }
+  var count=form1.ckids.length;
+  var cfwz='';
+  for(var i=0;i<count;i++){
+    if($("[name='ckids']").eq(i).attr("checked")=='checked'){
+      if($("[name='dacfwz']").eq(i).val()==null||$("[name='dacfwz']").eq(i).val()==''){
+        $("[name='dacfwz']").eq(i).val(" ");
+      }
+      cfwz+=$("[name='dacfwz']").eq(i).val()+",";
+    }
+  }
+  form1.dacfwzs.value=cfwz;
+  if(confirm("确定出库吗？")){
+    $("[name='tj']").attr("disabled","disabled");
+    $("#form1").attr("action","/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dackBc");
+    $("#form1").submit();
+  }
+}
+// 撤销操作
+function chexiao(){
+  var len=$("[name='ckids']:checked").length;
+  if(len==0){
+    alert("请至少选择一条记录！");
+    return;
+  }
+  if(confirm("确定撤销吗？")){
+    $("[name='cxx']").attr("disabled","disabled");
+    $("#form1").attr("action","/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dacksqcx");
+    $("#form1").submit();
+  }
+}
+function qk(){
+  $(":text").val("");
+  $("[name='kflx']").val("");
+  $("[name='cklx']").val("");
+}
+// 计算长度
+function ByteWordCount(txt) { 
+  txt = txt.replace(/([\u0391-\uFFE5])/ig,'11');
+  var count = txt.length;
+  return count;
+}
+// 判断长度
+function checkLength(input,name,maxLength){
+  if(maxLength==0){
+    return true;
+  }
+  var len=ByteWordCount(input.val());
+  if(len>maxLength){
+    input.focus();
+    return false;
+  }
+  return true;
+}
+</script>
+</html>

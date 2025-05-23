@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import time
 import sys
 import traceback
+import configparser
 
 # def Beijing_time():
 #     r=requests.get('https://www.baidu.com')
@@ -41,11 +42,14 @@ def trans(s):
 
 url="http://172.26.57.60/rsdagl/rsdagl/stdagl/action/StdaglAction.do?method=dackCx"
 if __name__ == "__main__":
-    server=input("输入服务器地址:")
-    cookie=input("输入cookie:")
+    cf = configparser.ConfigParser()
+    cf.read('config.ini', encoding="utf-8-sig")
+    server=cf["config"]["url"]
+    cookie=cf["config"]["cookie"]
+    sleep_time=int(cf["config"]["time"])
     headers=trans(headers%cookie)
     while(1):
-        time.sleep(5)
+        time.sleep(sleep_time)
         try:
             r=requests.get(url,headers=headers)
             soup = BeautifulSoup(r.text, 'lxml')

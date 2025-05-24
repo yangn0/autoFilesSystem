@@ -22,7 +22,7 @@ def check(db_name, table_name):
         return True  # 不能建表
 
 
-time_out = sys.argv[-1]
+time_out = int(sys.argv[-1])
 conn = sqlite3.connect(DATABASE)
 #创建一个游标 cursor
 cur = conn.cursor()

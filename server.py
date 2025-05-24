@@ -204,6 +204,9 @@ def getStatistics():
     data = g.cur.fetchall()
     return data
 
+@app.route('/statisticsIndex', methods=['GET'])
+def statisticsIndex():
+    return render_template("summary.html")
 
 @app.route('/dack', methods=['GET'])
 def dack():

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>接单汇总</title>
+    <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript" src="static/lib/jquery/1.9.1/jquery.js"></script>
+</head>
+
+<body>
+    <table border="1">
+        <tbody id="statistic">
+            <tr class='item' style='background:yellow;font-weight:bold'>
+                <td>用户</td>
+                <td>接单数</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+<script>
+    function getStatistics() {
+        $.ajax({
+            async: false,
+            type: 'get',
+            url: '/getStatistics',
+            data: {
+            },
+            dataType: 'json',
+            success: function (data, stats) {
+                window.document.getElementById("statistic").innerHTML = "\
+                    <tr class='item' style='background:yellow;font-weight:bold'> \
+                        <td>用户</td> \
+                        <td>接单数</td> \
+                    </tr>"
+                for (var i = 0, len = data.length; i < len; i++) {
+                        window.document.getElementById("statistic").innerHTML += "\
+                            <tr class='item' style='background:rgb(149,236,105);'> \
+                                <td>"+ data[i][0] + "</td > \
+                                <td>"+ data[i][1] + "</td> \
+                            </tr>";
+                }
+            }
+        });
+    }
+    getStatistics();
+
+</script>
+</html>

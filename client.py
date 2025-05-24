@@ -47,7 +47,7 @@ if __name__ == "__main__":
     cf = configparser.ConfigParser()
     cf.read('config.ini', encoding="utf-8-sig")
     server = cf["config"]["url"]
-    cookie = cf["config"]["cookie"]
+    cookie = input("cookie:")
     sleep_time = int(cf["config"]["time"])
     headers = trans(headers % cookie)
     while (1):

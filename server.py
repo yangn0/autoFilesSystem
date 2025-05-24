@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, g, jsonify, make_response
 import sqlite3
 import traceback
 import time
+import sys
 
 DATABASE = './database.db'
 
@@ -21,7 +22,7 @@ def check(db_name, table_name):
         return True  # 不能建表
 
 
-overtime = 15
+time_out = sys.argv[-1]
 conn = sqlite3.connect(DATABASE)
 #创建一个游标 cursor
 cur = conn.cursor()
@@ -159,8 +160,8 @@ def setAlready():
     values = g.cur.fetchall()
     if (len(values) >= 1):
         latest_time = values[0][2]
-        if (time.time() - latest_time <= overtime):
-            return {"errno": "false", "data": "接单太快啦！请%d秒后再接下一单" % overtime}
+        if (time.time() - latest_time <= time_out):
+            return {"errno": "false", "data": "接单太快啦！请%d秒后再接下一单" % time_out}
 
     try:
         now_time = time.time()

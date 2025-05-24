@@ -5,4 +5,6 @@ RUN pip install flask -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 COPY . .
 
-CMD ["python", "./server.py"]
+ENV TIMEOUT="15"
+
+CMD ["python", "./server.py", TIMEOUT]

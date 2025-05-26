@@ -181,18 +181,19 @@
             },
             dataType: 'json',
             success: function (data, stats) {
-                if (data[0][0] == "工作机获取数据失败" ) {
-                    offline_audio.play();
-                }else{
-                    for (var i = 0, len = data.length; i < len; i++) {
-                        if (data[i][5] != "已接单") {
-                            if (last_num.includes(data[i][0])) {
 
-                            } else {
-                                console.log("play");
-                                audio.play();
-                                break;
-                            }
+                for (var i = 0, len = data.length; i < len; i++) {
+                    if (data[0][0] == "工作机获取数据失败" ) {
+                        offline_audio.play();
+                        break;
+                    }
+                    if (data[i][5] != "已接单") {
+                        if (last_num.includes(data[i][0])) {
+
+                        } else {
+                            console.log("play");
+                            audio.play();
+                            break;
                         }
                     }
                 }
@@ -259,7 +260,7 @@
                     </tr>"
                 for (var i = 0, len = data.length; i < len; i++) {
                         window.document.getElementById("rank").innerHTML += "\
-                            <tr class='item' style='background:rgb(149,236,105);'> \
+                            <tr class='item'> \
                                 <td>"+ data[i][0] + "</td > \
                                 <td>"+ data[i][1] + "</td> \
                                 <td>"+ data[i][2] + "</td> \

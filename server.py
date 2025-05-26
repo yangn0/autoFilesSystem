@@ -195,7 +195,7 @@ def getRank():
 
 @app.route('/getStatistics', methods=['GET'])
 def getStatistics():
-    # 获取user一天内接单数量
+    # 获取user所有接单数量
     g.cur.execute('''SELECT 
                     "user", 
                     COUNT(*) AS record_count 

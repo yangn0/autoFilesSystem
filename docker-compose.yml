@@ -1,0 +1,9 @@
+services:
+  autofilessystem:
+    image: yangn0/autofilessystem
+    container_name: autofilessystem
+    environment:
+      - TIMEOUT=5
+    restart: unless-stopped
+    ports:
+      - 1024:1024

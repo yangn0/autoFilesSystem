@@ -172,6 +172,7 @@
     const offline_audio = new Audio('static/offline.wav');
     audio.loop = false;
     var last_num = [];
+    var alarm_flag=0;
     function getList() {
         $.ajax({
             async: false,
@@ -184,10 +185,16 @@
 
                 for (var i = 0, len = data.length; i < len; i++) {
                     if (data[0][0] == "工作机获取数据失败" ) {
-                        offline_audio.play();
-                        break;
+                        if(alarm_flag==1){
+                            break;
+                        }else{
+                            alarm_flag=1;
+                            offline_audio.play();
+                            break;
+                        }
                     }
                     if (data[i][5] != "已接单") {
+                        alarm_flag=0;
                         if (last_num.includes(data[i][0])) {
 
                         } else {
